@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs 
-# import pandas
-#import selenium
 
-
+# need to add description - отличается от характеристики
 def parse_allbazar_toys():  # парсинг игрушек с сайта allbazar.top и пропись товаров в xls
     
     for page in range (1):
@@ -17,6 +15,7 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
         
     for item in list_item:
         draft_urls_list = []
+
         draft_urls = item.find('div', class_='listItem').find('a').get("href")
         draft_urls_list.append(draft_urls)
         # print(draft_urls_list)# - checkpoint
@@ -25,13 +24,13 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
             final_urls = f'https://allbazar.uz' + i
             # print(final_urls) - #checkpoint  
             r = requests.get(final_urls).content
-            soup = bs(r, 'lxml')
+            # soup = bs(r, 'lxml')
             # main_img = soup.find('div', class_='col-10 position-relative').find('img').get('data-src')
             # main_image = 'https://allbazar.uz' + main_img
-            secondary_img = soup.find('div', class_='col-2') 
-            imgs = secondary_img.find_('img')
+            secondary_img = soup.find('div', class_='col-2')('img')
+            imgs = secondary_img.find_all('div', class_='bg-white mb-2 br-block').find('img').get('data-src')
             the = f'https://allbazar.uz' + imgs
-            # secondary_images = 'https://allbazar.uz' + secondary_img 
+            # secondary_images = 'https://allbazar.uz' +
             # product_name = soup.find('h1', class_='h3 mb-3').get_text()  # DONE
             # product_price = soup.find('span', class_='listPrice').get_text().replace('uzs',' сум')  # DONE - NEED TO TRY ADD MARGIN
             # characteristics = soup.find('div', attrs='br-block p-3 bg-white')
@@ -42,8 +41,8 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
             #         _ch = characteristic.text.strip('\n').strip('\t')
             #         characteristics1.append(_ch)
 
-        print(the)        
-
+        # print(main_image,product_name, product_price, characteristics1)
+        print(the)
 
 parse_allbazar_toys()
 
