@@ -48,4 +48,3 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
 parse_allbazar_toys()
 
 
-#### MAZAFAKA
