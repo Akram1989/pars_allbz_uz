@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs 
 
 # need to add description - отличается от характеристики
-def parse_allbazar_toys():  # парсинг игрушек с сайта allbazar.top и пропись товаров в xls
+def parse_allbazar_toys():  # парсинг игрушек с сайта allbazar.top и пропись товаров в csv или лучше json
     
     for page in range (1):
         url = f'https://allbazar.uz/cat/api/getcat.php?params%5Bfilter%5D%5BACTIVE%5D=Y&params%5Bfilter%5D%5B!PREVIEW_PICTURE%5D=false&params%5Bfilter%5D%5BINCLUDE_SUBSECTIONS%5D=Y&params%5Bfilter%5D%5BSECTION_ID%5D=103&params%5Bclass%5D=col-md-3%20mb-3%20col-20%20col-6&params%5Bsort%5D%5BSHOW_COUNTER%5D=DESC&params%5Bsort%5D%5BSECTION_ID%5D=RAND&params%5Bpagen%5D%5BnPageSize%5D=10&params%5Bpagen%5D%5BiNumPage%5D={page}'
@@ -21,28 +21,32 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
         # print(draft_urls_list)# - checkpoint
         for i in draft_urls_list:
             characteristics1 = []
+            additional_photos = []
             final_urls = f'https://allbazar.uz' + i
             # print(final_urls) - #checkpoint  
             r = requests.get(final_urls).content
-            # soup = bs(r, 'lxml')
-            # main_img = soup.find('div', class_='col-10 position-relative').find('img').get('data-src')
-            # main_image = 'https://allbazar.uz' + main_img
-            secondary_img = soup.find('div', class_='col-2')('img')
-            imgs = secondary_img.find_all('div', class_='bg-white mb-2 br-block').find('img').get('data-src')
-            the = f'https://allbazar.uz' + imgs
-            # secondary_images = 'https://allbazar.uz' +
-            # product_name = soup.find('h1', class_='h3 mb-3').get_text()  # DONE
-            # product_price = soup.find('span', class_='listPrice').get_text().replace('uzs',' сум')  # DONE - NEED TO TRY ADD MARGIN
-            # characteristics = soup.find('div', attrs='br-block p-3 bg-white')
-            # rows = characteristics.find_all(attrs='col-md-6')
+            soup = bs(r, 'lxml')
+            main_img = soup.find('div', class_='col-10 position-relative').find('img').get('data-src')
+            main_photo = 'https://allbazar.uz' + main_img
+            dir = soup.find('div', class_="col-2").find_all('img')
+            for i in dir:
+                imgs = url + i['data-big']
+                additional_photos.append(imgs)
+            product_name = soup.find('h1', class_='h3 mb-3').get_text()  # DONE
+            product_price = soup.find('span', class_='listPrice').get_text().replace('uzs',' сум')  # DONE - NEED TO TRY ADD MARGIN
+            characteristics = soup.find('div', attrs='br-block p-3 bg-white')
+            rows = characteristics.find_all(attrs='col-md-6')
 
-            # for row in rows:
-            #     for characteristic in row.find_all('div'):
-            #         _ch = characteristic.text.strip('\n').strip('\t')
-            #         characteristics1.append(_ch)
+            for row in rows:
+                for characteristic in row.find_all('div'):
+                    _ch = characteristic.text.strip('\n').strip('\t')
+                    characteristics1.append(_ch)
 
-        # print(main_image,product_name, product_price, characteristics1)
-        print(the)
+        print(product_name,)
+        print(product_price)
+        print(characteristics1)
+        print( main_photo,)
+        print(additional_photos)
 
 parse_allbazar_toys()
 
