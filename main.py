@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs 
 
 def parse_allbazar_toys():  # парсинг игрушек с сайта allbazar.top и пропись товаров в csv или лучше json
-    
+
     for page in range (1):
         url = f'https://allbazar.uz/cat/api/getcat.php?params%5Bfilter%5D%5BACTIVE%5D=Y&params%5Bfilter%5D%5B!PREVIEW_PICTURE%5D=false&params%5Bfilter%5D%5BINCLUDE_SUBSECTIONS%5D=Y&params%5Bfilter%5D%5BSECTION_ID%5D=103&params%5Bclass%5D=col-md-3%20mb-3%20col-20%20col-6&params%5Bsort%5D%5BSHOW_COUNTER%5D=DESC&params%5Bsort%5D%5BSECTION_ID%5D=RAND&params%5Bpagen%5D%5BnPageSize%5D=10&params%5Bpagen%5D%5BiNumPage%5D={page}'
         little_url = 'https://allbazar.uz'
@@ -12,7 +12,7 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
         soup = bs(r.content, 'lxml')
         # print(soup) - checkpoint
         list_item = soup.find_all('div', class_='col-md-3 mb-3 col-20 col-6')
-        
+
     for item in list_item:
         draft_urls_list = []
 
@@ -23,7 +23,7 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
             characteristics1 = []
             additional_photos = []
             final_urls = f'https://allbazar.uz' + i
-            # print(final_urls) - #checkpoint  
+            # print(final_urls) - #checkpoint
             r = requests.get(final_urls).content
             soup = bs(r, 'lxml')
             main_img = soup.find('div', class_='col-10 position-relative').find('img').get('data-src')
@@ -34,7 +34,7 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
                 additional_photos.append(imgs)
             product_name = soup.find('h1', class_='h3 mb-3').get_text()
             product_price = soup.find('span', class_='listPrice').get_text().replace('uzs',' сум')  # DONE - NEED TO TRY ADD MARGIN
-            product_description = soup.find('div', class_='container mt-3').find('div', class_='mt-2')
+            product_description = soup.find('div', class_='container mt-3').find('div', class_='mt-2').text
             characteristics = soup.find('div', attrs='br-block p-3 bg-white')
             rows = characteristics.find_all(attrs='col-md-6')
 
@@ -54,3 +54,4 @@ def parse_allbazar_toys():  # парсинг игрушек с сайта allbaz
 parse_allbazar_toys()
 
 
+#починить продукт дескрипшн если на листе его нет дает ошибку
