@@ -1,0 +1,29 @@
+{
+    "SKU": "ALBZ",
+    "category": "Children",
+    "sub_category": "toys",
+    "name": "Конструктор LEGO Jurassic World 75938 Бой тираннозавра и робота-динозавра",
+    "price": "1 519 000 сум",
+    "size": "test",
+    "color": "test",
+    "stock": "1",
+    "characteristics1": [
+        "Развиваемые навыки: логика и мышление, моторика и ловкость, творческое мышление",
+        "Контейнер для хранения: нет",
+        "Количество мини-фигурок: 4 шт.",
+        "Двигатель: нет",
+        "Рекомендуемый возраст: от 8 лет",
+        "Пол: для девочки, для мальчика",
+        "Деталей: 716 шт.",
+        "Материал: пластик",
+        "Тип: классический"
+    ],
+    "main_photo": [
+        "https://allbazar.uz/upload/iblock/a96/a96417b04b8f87274420f460ace025f7.jpg"
+    ],
+    "additional_photos": [
+        "https://allbazar.uz/upload/iblock/a96/a96417b04b8f87274420f460ace025f7.jpg",
+        "https://allbazar.uz/upload/iblock/30c/30c375d504215386f63169888649a9ec.jpg",
+        "https://allbazar.uz/upload/iblock/c3a/c3a6de170484abe7a4a606fe82892207.jpg"
+    ]
+}
