@@ -27,14 +27,21 @@ for page in range(0, 29):
 for i in product_ulr_list:
     try:
         product_pictures = []
+        product_specs = []
         r = requests.get(i, headers=HEADERS)
         soup = bs(r.content, 'lxml')
         product_title = soup.find(class_='h3 mb-3').text
-        product_price = soup.find('span', class_='listPrice').get_text().replace('uzs', ' сум')
+        product_price = soup.find('span', class_='listPrice').get_text().replace('uzs', '')
         product_description = soup.find_all(class_="mt-2")[-1].get_text().strip().replace('Allbazar / ', '').replace(
             ' ', ' ')
         characteristics = soup.find('div', attrs='br-block p-3 bg-white')
-        product_cpecs = characteristics.find(class_='col-md-6').text.strip('\n').strip('\t')
+        rows = characteristics.find_all(attrs='col-md-6')
+
+        for row in rows:
+            for characteristic in row.find_all('div'):
+                _ch = characteristic.text.strip('\n').strip('\t')
+                product_specs.append(_ch)
+
         dir = soup.find('div', class_="col-2").find_all('img')
         for item in dir:
             imgs = 'https://allbazar.uz' + item['data-big']
@@ -47,7 +54,7 @@ for i in product_ulr_list:
             'product_title': product_title.replace('\n', '').replace('\t', ''),
             'product_price': product_price.replace('\n', '').replace('\t', ''),
             'product_description': product_description.replace('\n', '').replace('\t', ''),
-            'product_cpecs': product_cpecs.replace('\n', '').replace('\t', ''),
+            'product_cpecs': product_specs,
             'product_pics': product_pictures,
             'product_colors': '',
             'product_sizes': '',
