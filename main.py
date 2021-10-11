@@ -4,6 +4,9 @@ import json
 
 #Добавить сверху блок кода, чтобы парсил ссылки с категориями, из них все что вытекает ниже, тем самым весь сайт
 
+# # добавить маржу
+
+
 product_ulr_list = []
 products = []
 HEADERS = {
@@ -22,37 +25,38 @@ for page in range(0,29):
         product_ulr_list.append('https://allbazar.uz' + prd_raw_link)
 
 for i in product_ulr_list:
-    product_pictures = []
-    r = requests.get(i, headers=HEADERS)
-    soup = bs(r.content, 'lxml')
-    product_title = soup.find(class_='h3 mb-3').text
-    product_price = soup.find('span', class_='listPrice').get_text().replace('uzs', ' сум')
-    product_description = soup.find_all(class_="mt-2")[-1].get_text().strip().replace('Allbazar / ', '').replace(' ', ' ')
-    characteristics = soup.find('div', attrs='br-block p-3 bg-white')
-    product_cpecs = characteristics.find(class_='col-md-6').text.strip('\n').strip('\t')
-    dir = soup.find('div', class_="col-2").find_all('img')
-    for item in dir:
-        imgs = 'https://allbazar.uz' + item['data-big']
-        product_pictures.append(imgs)
+    try:
+        product_pictures = []
+        r = requests.get(i, headers=HEADERS)
+        soup = bs(r.content, 'lxml')
+        product_title = soup.find(class_='h3 mb-3').text
+        product_price = soup.find('span', class_='listPrice').get_text().replace('uzs', ' сум')
+        product_description = soup.find_all(class_="mt-2")[-1].get_text().strip().replace('Allbazar / ', '').replace(' ', ' ')
+        characteristics = soup.find('div', attrs='br-block p-3 bg-white')
+        product_cpecs = characteristics.find(class_='col-md-6').text.strip('\n').strip('\t')
+        dir = soup.find('div', class_="col-2").find_all('img')
+        for item in dir:
+            imgs = 'https://allbazar.uz' + item['data-big']
+            product_pictures.append(imgs)
+        product_dict = {
+            'product_title' : product_title.replace('\n', '').replace('\t', ''),
+            'product_price' : product_price.replace('\n', '').replace('\t', ''),
+            'product_description' : product_description.replace('\n', '').replace('\t', ''),
+            'product_cpecs' : product_cpecs.replace('\n', '').replace('\t', ''),
+            'product_pics' : product_pictures
+        }
 
-    product_dict = {
-        'product_title' : product_title.replace('\n', '').replace('\t', ''),
-        'product_price' : product_price.replace('\n', '').replace('\t', ''),
-        'product_description' : product_description.replace('\n', '').replace('\t', ''),
-        'product_cpecs' : product_cpecs.replace('\n', '').replace('\t', ''),
-        'product_pics' : product_pictures
-    }
+        count += 1
+        print(f'#{count}: {i} is done...')
 
-    count += 1
-    print(f'#{count}: {i} is done...')
+    except Exception:
+        pass
 
-    products.append(product_dict)
+        products.append(product_dict)
 
-    with open('test.json', 'w', ) as json_file:
-        json.dump(products, json_file, indent=4, ensure_ascii=False)
+        with open('test.json', 'w', ) as json_file:
+            json.dump(products, json_file, indent=4, ensure_ascii=False)
 
 
 
 
-
-# # добавить маржу
