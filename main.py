@@ -51,6 +51,7 @@ for i in product_ulr_list:
             'product_sku': 'Albz',
             'category': 'Children',
             'sub_category': 'Toys',
+            "sub_category_2": "",
             'product_title': product_title.replace('\n', '').replace('\t', ''),
             'product_price': product_price.replace('\n', '').replace('\t', ''),
             'product_description': product_description.replace('\n', '').replace('\t', ''),
